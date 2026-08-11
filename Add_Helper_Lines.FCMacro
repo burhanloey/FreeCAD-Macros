@@ -1,0 +1,14 @@
+import FreeCAD as App
+import FreeCADGui as Gui
+import Draft
+
+if Gui.Selection.hasSelection():
+    curve = Gui.Selection.getSelection()[0]
+    
+    if 'Points' in curve.PropertiesList:
+        line = Draft.make_wire(curve.Points)
+        line.Label = '__helperline'
+        line.Placement = curve.Placement
+        Draft.autogroup(line)
+        
+        App.ActiveDocument.recompute()

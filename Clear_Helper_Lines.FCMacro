@@ -1,0 +1,5 @@
+import FreeCAD as App
+
+for obj in App.ActiveDocument.Objects:
+    if obj.Label.startswith('__helperline'):
+        App.ActiveDocument.removeObject(obj.Name)
