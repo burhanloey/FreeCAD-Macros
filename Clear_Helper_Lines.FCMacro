@@ -1,5 +1,10 @@
 import FreeCAD as App
 
+"""A utility macro to remove all poly lines that have been added
+by the macro Add_Helper_Lines.FCMacro. Simply rename the poly lines
+to exclude them from removal.
+"""
+
 for obj in App.ActiveDocument.Objects:
     if obj.Label.startswith('__helperline'):
         App.ActiveDocument.removeObject(obj.Name)

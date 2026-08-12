@@ -2,6 +2,10 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft
 
+"""A utility macro to add a helper poly line on a Bézier curve or a BSpline
+marking its control points.
+"""
+
 if Gui.Selection.hasSelection():
     curve = Gui.Selection.getSelection()[0]
     
