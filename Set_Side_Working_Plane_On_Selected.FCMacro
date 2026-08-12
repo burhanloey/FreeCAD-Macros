@@ -1,0 +1,42 @@
+import FreeCAD as App
+import FreeCADGui as Gui
+import Draft
+import WorkingPlane
+
+"""A Draft utility macro to set side view working plane on selected object.
+
+The working plane origin will be set to the vertex position, or
+in case of an object having more than one vertices, it will be set
+to the first vertex in the list.
+
+If there is no selection, the working plane will be set to the origin plane.
+"""
+
+def _align_to_point_and_side_view(point):
+    wp = WorkingPlane.get_working_plane()
+    z_axis = App.Vector(1, 0, 0)
+    
+    wp.align_to_point_and_axis(point, z_axis)
+
+if Gui.Selection.hasSelection():
+    sel = Gui.Selection.getSelectionEx()
+    sel_obj = sel[0]
+    
+    if sel_obj.HasSubObjects:
+        sub_obj = sel_obj.SubObjects[0]
+        vert = sub_obj.Vertexes[0]
+        pt = vert.Point
+        
+        _align_to_point_and_side_view(pt)
+    
+    else:
+        obj = sel_obj.Object
+        shp = obj.Shape
+        vert = shp.Vertexes[0]
+        pt = vert.Point
+        
+        _align_to_point_and_side_view(pt)
+
+else:
+    origin = App.Vector(0, 0, 0)
+    _align_to_point_and_side_view(origin)
