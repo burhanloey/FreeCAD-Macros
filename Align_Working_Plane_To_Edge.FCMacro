@@ -1,0 +1,26 @@
+import FreeCAD as App
+import FreeCADGui as Gui
+import Draft
+import WorkingPlane
+
+"""A Draft utility macro to align the working plane parallel to a straight edge
+or a tangent to the beginning of a curved edge. Use this in combination with
+the Add_Helper_Lines.FCMacro to align to the other side of the curved edge.
+
+This only applicable to the selected edge, not the whole object, i.e., only
+click the edge once.
+"""
+
+sel = Gui.Selection.getSelectionEx()
+sel_obj = sel[0]
+edge = sel_obj.SubObjects[0]
+
+origin = edge.Vertexes[0].Point
+normal = edge.derivative1At(edge.FirstParameter).normalize()
+
+wp = WorkingPlane.get_working_plane()
+wp.align_to_point_and_axis(origin, normal, upvec=App.Vector(0,0,1))
+
+placement = wp.get_placement()
+placement.rotate(App.Vector(), App.Vector(0,1,0), 90)
+wp.align_to_placement(placement)
